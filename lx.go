@@ -63,10 +63,16 @@ func ExtractBaseTarbal() {
 	if err != nil {
 		log.Fatalf("Error while trying to extract AOSC Tarbal")
 	}
+	UpdateInstallProgress(40)
 	log.Printf("Moving Home folder ...")
 	XPostTar := exec.Command("cd", path.Join(os.Getenv("localappdata"), "lxss/"), "&",
 		"move rootfs rootfs-ubuntu", "&",
 		"move root rootfs", "&",
 		"copy rootfs\\root root")
 	err = XPostTar.Run()
+	if err != nil {
+		log.Fatalf("Error while trying to moving rootfs")
+	}
+	UpdateInstallProgress(80)
+	Install4()
 }
