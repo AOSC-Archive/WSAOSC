@@ -2,10 +2,12 @@ package main
 
 import (
 	"bytes"
+	"fmt"
 	"log"
 	"os"
 	"os/exec"
 	"path"
+	//"path"
 	//"time"
 )
 
@@ -19,14 +21,6 @@ func PurgeLx() {
 	}
 
 	Prepare2()
-	/*
-		purgelx = exec.Command("rd", "/q /s", path.Join(os.Getenv("localappdata"), "lxss/"))
-		err = purgelx.Run()
-		if err != nil {
-			log.Fatalf("ERROR running rd: %s", err)
-		}
-	*/
-	//log.Printf("lxrun stdout: %s", out.String())
 }
 
 func InstallLx() {
@@ -41,38 +35,49 @@ func InstallLx() {
 	//log.Printf("lxrun stdout: %s", out.String())
 }
 
-func LxCmd(Cmd string) string {
-	Cmd = "\"" + Cmd + "\""
-	return "bash -c " + Cmd
-	/*
-		LxCmd := exec.Command("cd", path.Join(os.Getenv("localappdata"), "lxss"), "&", "bash -c", Cmd)
-		err := LxCmd.Run()
-		if err != nil {
-			log.Fatalf("LxCmd Execution Err: %s", err)
-		}*/
+func TestLx() {
+	p := exec.Command("bash.exe", "-c", "bash -version")
+	p.Stdin = os.Stdin
+	p.Stdout = os.Stdout
+	p.Stderr = os.Stderr
+	e := p.Run()
+	if e != nil {
+		fmt.Println(e)
+	}
+}
+func LxCmd(Cmd string) {
+	p := exec.Command("bash.exe", "-c", Cmd)
+	p.Stdin = os.Stdin
+	p.Stdout = os.Stdout
+	p.Stderr = os.Stderr
+	e := p.Run()
+	if e != nil {
+		log.Printf(e.Error())
+	}
 }
 
 func ExtractBaseTarbal() {
+	UpdateInstallProgress(0)
+	LxCmd("bash -version")
 	log.Printf("Start Extracting AOSC Base RootFS ...")
+	LXDIR := path.Join(os.Getenv("localappdata"), "lxss")
+
 	//XTar := exec.Command("cd", path.Join(os.Getenv("localappdata"), "lxss/"), "&", LxCmd("mkdir -p rootfs-aosc && mv aosc.tar.xz rootfs-aosc && cd rootfs-aosc && tar -xvf aosc.tar.xz"))
-	XTar := exec.Command(LxCmd("cd /root &&" +
-		"rm -f .bashrc &&" +
-		"tar -xvf aosc.tar.xz &&" +
-		""))
-	err := XTar.Run()
-	if err != nil {
-		log.Fatalf("Error while trying to extract AOSC Tarbal")
-	}
+	LxCmd("mv " + MSPathToWSL(path.Join(LXDIR, "aosc.tar.xz")) + " /root")
+	UpdateInstallProgress(20)
+	LxCmd("cd /root && " +
+		"rm -f .bashrc && " +
+		"tar -xvpf aosc.tar.xz && " +
+		"exit")
+
 	UpdateInstallProgress(40)
 	log.Printf("Moving Home folder ...")
-	XPostTar := exec.Command("cd", path.Join(os.Getenv("localappdata"), "lxss/"), "&",
-		"move rootfs rootfs-ubuntu", "&",
-		"move root rootfs", "&",
-		"copy rootfs\\root root")
-	err = XPostTar.Run()
-	if err != nil {
-		log.Fatalf("Error while trying to moving rootfs")
-	}
+	psout := Powershell("cd " + LXDIR + "; " +
+		"move rootfs rootfs-ubuntu" + "; " +
+		"move root rootfs" + "; " +
+		"move rootfs\\root root")
+	log.Printf("PS> Output %s", psout)
 	UpdateInstallProgress(80)
+	log.Printf("Everything Complete, Continuing ...")
 	Install4()
 }

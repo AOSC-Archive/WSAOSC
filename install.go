@@ -1,10 +1,8 @@
 package main
 
-import (
-	"log"
-	"time"
-	//	"sync"
-)
+import "log"
+
+//	"sync"
 
 func Install() {
 	Install1()
@@ -41,14 +39,15 @@ func Install2() {
 
 func Install3() {
 	log.Printf("This should start install3() ...")
-	time.Sleep(5 * time.Second)
+	//time.Sleep(5 * time.Second)
 	go ExtractBaseTarbal()
+	/**/
 }
 
 func Install4() {
+	UpdateInstallProgress(100)
 	InfoMsg("AOSC OS successfully installed!", "Your AOSC OS 4.0 on WSL is ready to roll.\n"+
 		"Now open cmd and type bash to have a try.")
-	UpdateInstallProgress(100)
 }
 
 func UpdateDownloadProgress(progress int) {

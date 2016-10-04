@@ -13,7 +13,7 @@ import (
 )
 
 func Download() {
-	file, err := os.Create(path.Join(os.Getenv("localappdata"), "lxss/root/aosc.tar.xz"))
+	file, err := os.Create(path.Join(os.Getenv("localappdata"), "lxss/aosc.tar.xz"))
 	if err != nil {
 		log.Println(err)
 	}

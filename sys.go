@@ -1,9 +1,14 @@
 package main
 
 import (
+	//	"bytes"
+	"bytes"
+	"fmt"
 	"os"
+	"os/exec"
 	"path"
 	"runtime"
+	"strings"
 	//"fmt"
 	"log"
 	"strconv"
@@ -96,4 +101,37 @@ func DetectInstalledRootfs() bool {
 	}
 	log.Printf("ERROR: Cannot download MS Basic RootFS")
 	return false
+}
+
+func MSPathToWSL(path string) string {
+	path = strings.Replace(path, "\\", "/", -1)
+	path = strings.Replace(path, ":", "", -1)
+	path = strings.Replace(path, "C", "c", 1) //TODO: a little dirty to assume C
+	path = "/mnt/" + path
+	return path
+}
+
+func Powershell(Ps string) string {
+
+	cmd := exec.Command("Powershell.exe",
+		"-NoProfile",
+		"-NoLogo",
+		"-ExecutionPolicy",
+		"Bypass",
+		"-Command", Ps)
+
+	var Out bytes.Buffer
+	var Stderr bytes.Buffer
+
+	cmd.Stdin = os.Stdin
+	cmd.Stdout = &Out
+	cmd.Stderr = &Stderr
+
+	err := cmd.Run()
+	if err != nil {
+		fmt.Println(fmt.Sprint(err) + ": " + Stderr.String())
+	}
+
+	r := Out.String()
+	return r
 }
