@@ -20,13 +20,15 @@ import (
 func DetectDevMode() bool {
 	DevKey, err := registry.OpenKey(registry.LOCAL_MACHINE, `SOFTWARE\Microsoft\Windows\CurrentVersion\AppModelUnlock`, registry.QUERY_VALUE)
 	if err != nil {
-		log.Fatalf("ERROR Querying Registry: %s\n", err)
+		//log.Fatalf("ERROR Querying Registry: %s\n", err)
+		ErrMsg("ERROR Querying Registry", "ERROR Querying Registry: %s", err)
 		return false
 	}
 	defer DevKey.Close()
 	DevMode, _, err := DevKey.GetIntegerValue("AllowDevelopmentWithoutDevLicense")
 	if err != nil {
-		log.Fatalf("ERROR Querying Value: %s\n", err)
+		//log.Fatalf("ERROR Querying Value: %s\n", err)
+		ErrMsg("ERROR Querying Value", "ERROR Querying Value: %s", err)
 		return false
 	}
 	log.Printf("REG: AllowDevelopmentWithoutDevLicense: %d\n", DevMode)
@@ -36,12 +38,14 @@ func DetectDevMode() bool {
 func GetWindow10Version() int64 {
 	OSVersionKey, err := registry.OpenKey(registry.LOCAL_MACHINE, `SOFTWARE\Microsoft\Windows NT\CurrentVersion`, registry.QUERY_VALUE)
 	if err != nil {
-		log.Fatalf("ERROR Reading Windows 10 VERSION: %s", err)
+		//log.Fatalf("ERROR Reading Windows 10 VERSION: %s", err)
+		ErrMsg("ERROR Reading Windows 10 Version", "ERROR Reading Windows 10 Version: %s", err)
 	}
 	defer OSVersionKey.Close()
 	OSVersion, _, err := OSVersionKey.GetStringValue("CurrentBuildNumber")
 	if err != nil {
-		log.Fatalf("ERROR Reading CurrentBuildNumver: %s", err)
+		//log.Fatalf("ERROR Reading CurrentBuildNumver: %s", err)
+		ErrMsg("ERROR Reading CurrentBuildNumver", "ERROR Reading CurrentBuildNumver: %s", err)
 	}
 	log.Printf("REG: CurrentBuildNumber: %s", OSVersion)
 	OSVerInt, _ := strconv.ParseInt(OSVersion, 10, 0)

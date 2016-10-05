@@ -37,7 +37,8 @@ func Prepare1() {
 			UpdatePrepareProgress(30)
 		} else {
 			ReadyForInstall = false
-			log.Fatal("Installation Canceled")
+			ErrMsg("Installation Canceled", "Installation canceled due to previous err")
+			//log.Fatal("Installation Canceled")
 		}
 	}
 	Win10Ver := GetWindow10Version()

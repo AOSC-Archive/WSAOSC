@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	//	"strings"
 
@@ -13,9 +14,10 @@ var inTE, statusTE *walk.TextEdit
 var btDetect, btInstall, btAbout *walk.PushButton
 var progCurr, progTotal *walk.ProgressBar
 var lv *LogView
+var debug bool
 
 func ui() {
-
+	debug = false
 	if err := (MainWindow{
 		Title:    "WSAOSC - AOSC OS on WSL | Installer",
 		AssignTo: &mw,
@@ -97,7 +99,9 @@ func ui() {
 	lv.PostAppendText("===== Welcome to WSAOSC Installer! =====\n\n")
 	log.SetPrefix(LOG_PREFIX)
 	log.SetFlags(log.Ltime)
-	log.SetOutput(lv)
+	if debug != true {
+		log.SetOutput(lv)
+	}
 
 	mw.Run()
 
@@ -115,4 +119,9 @@ func WarnMsg(title string, text string) {
 
 func InfoMsg(title string, text string) {
 	walk.MsgBox(mw, title, text, walk.MsgBoxIconInformation)
+}
+
+func ErrMsg(title string, text string, v ...interface{}) {
+	walk.MsgBox(mw, title, fmt.Sprintf(text, v), walk.MsgBoxIconError)
+	log.Fatalf(text, v)
 }
