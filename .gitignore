@@ -1,4 +1,4 @@
 vendor/
 *.exe
-WSAOSC*
+WSAOSC
 aosc.tar.xz
