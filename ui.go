@@ -121,7 +121,8 @@ func InfoMsg(title string, text string) {
 	walk.MsgBox(mw, title, text, walk.MsgBoxIconInformation)
 }
 
-func ErrMsg(title string, text string, v ...interface{}) {
-	walk.MsgBox(mw, title, fmt.Sprintf(text, v), walk.MsgBoxIconError)
-	log.Fatalf(text, v)
+func ErrMsg(text string, v ...interface{}) {
+	CompMsg := fmt.Sprintf(text+":\n%s", v)
+	walk.MsgBox(mw, text, CompMsg, walk.MsgBoxIconError)
+	log.Fatalln(CompMsg)
 }
