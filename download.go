@@ -12,6 +12,7 @@ import (
 	"github.com/iovxw/downloader"
 )
 
+// Download: download AOSC Base Nokernel tarbal
 func Download() {
 	file, err := os.Create(path.Join(os.Getenv("localappdata"), "lxss/aosc.tar.xz"))
 	if err != nil {

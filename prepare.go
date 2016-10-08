@@ -5,13 +5,16 @@ import (
 	"time"
 )
 
+// ReadyForInstall : true for ok. Used at the end of preparation
 var ReadyForInstall bool
 
+// Prepare : Detect the system to see if it's compatible for WSL
 func Prepare() {
 	ReadyForInstall = true
 	Prepare1()
 }
 
+// Prepare1 : UAC Enabled, Arch=amd64, Dev Mode Enabled, Windows 10, 14393
 func Prepare1() {
 	progCurr.SetValue(0)
 	progTotal.SetValue(0)
@@ -74,6 +77,7 @@ func Prepare1() {
 	//progTotal.SetValue(20)
 }
 
+// Prepare2 : All detection passed, showing completing message.
 func Prepare2() {
 	UpdatePrepareProgress(90)
 	if ReadyForInstall == true {
@@ -84,6 +88,8 @@ func Prepare2() {
 		btInstall.SetEnabled(true)
 	}
 }
+
+// UpdatePrepareProgress : Update both progress bar for preparation
 func UpdatePrepareProgress(progress int) {
 	progCurr.SetValue(progress)
 	progTotal.SetValue(progress / 5)

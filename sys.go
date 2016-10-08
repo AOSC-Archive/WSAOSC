@@ -15,6 +15,7 @@ import (
 	"golang.org/x/sys/windows/registry"
 )
 
+// DetectDevMode : return true if Dev Mode is enable.
 func DetectDevMode() bool {
 	DevKey, err := registry.OpenKey(registry.LOCAL_MACHINE, `SOFTWARE\Microsoft\Windows\CurrentVersion\AppModelUnlock`, registry.QUERY_VALUE)
 	if err != nil {
@@ -31,6 +32,7 @@ func DetectDevMode() bool {
 	return DevMode != 0
 }
 
+// GetWindow10Version : return the build number of windows 10.
 func GetWindow10Version() int64 {
 	OSVersionKey, err := registry.OpenKey(registry.LOCAL_MACHINE, `SOFTWARE\Microsoft\Windows NT\CurrentVersion`, registry.QUERY_VALUE)
 	if err != nil {
@@ -46,6 +48,7 @@ func GetWindow10Version() int64 {
 	return OSVerInt
 }
 
+// GetWindows10Edition : return windows 10 edition: professional, home basic, enterprise.
 func GetWindows10Edition() string {
 	OSEditionKey, err := registry.OpenKey(registry.LOCAL_MACHINE, `SOFTWARE\Microsoft\Windows NT\CurrentVersion`, registry.QUERY_VALUE)
 	if err != nil {
@@ -60,15 +63,18 @@ func GetWindows10Edition() string {
 	return OSEdition
 }
 
+// DetectUAC : To be removed
 func DetectUAC() {
 	log.Printf("UAC Access: Granted")
 }
 
+// GetGoArch : return the archetecture of the host machine
 func GetGoArch() string {
 	log.Printf("Runtime.GOARCH: %s", runtime.GOARCH)
 	return runtime.GOARCH
 }
 
+// EnableDevMode : Enable Devmode by setting that balue to 1
 func EnableDevMode() {
 	DevKey, err := registry.OpenKey(registry.LOCAL_MACHINE, `SOFTWARE\Microsoft\Windows\CurrentVersion\AppModelUnlock`, registry.SET_VALUE)
 	if err != nil {
@@ -81,6 +87,7 @@ func EnableDevMode() {
 	}
 }
 
+// DetectInstalledWSL : return true if found an previous install
 func DetectInstalledWSL() bool {
 	if _, err := os.Stat(path.Join(os.Getenv("localappdata"), "lxss/sha256")); err == nil {
 		log.Printf("Warning: Already found an existing install of LXSS")
@@ -90,6 +97,7 @@ func DetectInstalledWSL() bool {
 	return false
 }
 
+// DetectInstalledRootfs : return true if basic rootfs is successfully installed
 func DetectInstalledRootfs() bool {
 	if _, err := os.Stat(path.Join(os.Getenv("localappdata"), "lxss/root/.bashrc")); err == nil {
 		log.Printf("RootFS found under lxss")
@@ -99,6 +107,7 @@ func DetectInstalledRootfs() bool {
 	return false
 }
 
+// MSPathToWSL : Convert the windows style path to WSL compatible path.
 func MSPathToWSL(path string) string {
 	path = strings.Replace(path, "\\", "/", -1)
 	path = strings.Replace(path, ":", "", -1)
@@ -107,6 +116,7 @@ func MSPathToWSL(path string) string {
 	return path
 }
 
+// Powershell : Run Powershell command
 func Powershell(Ps string) string {
 
 	cmd := exec.Command("Powershell.exe",

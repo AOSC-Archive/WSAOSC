@@ -107,20 +107,24 @@ func ui() {
 
 }
 
+// AskMsg : Using AskMsgBox to ask for user choice
 func AskMsg(title string, text string) bool {
 	response := walk.MsgBox(mw, title, text, walk.MsgBoxOKCancel)
 	log.Printf("AskMsg User Choice: %d", response)
 	return response == 1
 }
 
+// WarnMsg : Show a warning box
 func WarnMsg(title string, text string) {
 	walk.MsgBox(mw, title, text, walk.MsgBoxIconWarning)
 }
 
+// InfoMsg : Show a info box
 func InfoMsg(title string, text string) {
 	walk.MsgBox(mw, title, text, walk.MsgBoxIconInformation)
 }
 
+// ErrMsg : Print a fatal log and show a error window.
 func ErrMsg(text string, v ...interface{}) {
 	CompMsg := fmt.Sprintf(text+":\n%s", v)
 	walk.MsgBox(mw, text, CompMsg, walk.MsgBoxIconError)
