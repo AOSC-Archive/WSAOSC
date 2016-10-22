@@ -74,6 +74,10 @@ func Prepare1() {
 		log.Fatalf("Installation Canceled.")*/
 	}
 
+	if DetectExecInPath("lxrun") == false {
+		ErrMsg("WSL not enabled", "Sorry to notify, but your WSL is not switched on in Windows features\n"+
+			"Try enable it in \"Programs and Features\" -> \"Turn Windows Features on or off\"")
+	}
 	//progTotal.SetValue(20)
 }
 

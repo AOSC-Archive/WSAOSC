@@ -141,3 +141,11 @@ func Powershell(Ps string) string {
 	r := Out.String()
 	return r
 }
+
+func DetectExecInPath(executable string) bool {
+	_, err := exec.LookPath(executable)
+	if err != nil {
+		return false
+	}
+	return true
+}
