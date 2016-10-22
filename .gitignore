@@ -3,3 +3,4 @@ vendor/
 WSAOSC
 aosc.tar.xz
 .idea
+*.syso

@@ -16,6 +16,7 @@ function config()
     else 
         print(color("%{green}The rsrc is found in path.%{reset}\n"))
     end
+    HydroDev.sh("rsrc -manifest WSAOSC.exe.manifest -ico aosc.ico WSAOSC.syso")
 end
 
 function HydroDev.default()
