@@ -52,7 +52,7 @@ func LxCmd(Cmd string) {
 func ExtractBaseTarbal() {
 	UpdateInstallProgress(0)
 	LxCmd("bash -version")
-	log.Printf("Start Extracting AOSC Base RootFS ...")
+	log.Printf("Start Extracting AOSC Base RootFS ... \nHold tight. This may take several minutes ...\n")
 	LXDIR := path.Join(os.Getenv("localappdata"), "lxss")
 
 	//XTar := exec.Command("cd", path.Join(os.Getenv("localappdata"), "lxss/"), "&", LxCmd("mkdir -p rootfs-aosc && mv aosc.tar.xz rootfs-aosc && cd rootfs-aosc && tar -xvf aosc.tar.xz"))
@@ -64,7 +64,7 @@ func ExtractBaseTarbal() {
 		"exit")
 
 	UpdateInstallProgress(40)
-	log.Printf("Moving Home folder ...")
+	log.Printf("Moving Home folder ...\n")
 	psout := Powershell("cd " + LXDIR + "; " +
 		"move rootfs rootfs-ubuntu" + "; " +
 		"move root rootfs" + "; " +
