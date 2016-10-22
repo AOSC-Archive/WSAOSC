@@ -2,3 +2,4 @@ vendor/
 *.exe
 WSAOSC
 aosc.tar.xz
+.idea

@@ -15,7 +15,8 @@ func PurgeLx() {
 	purgelx := exec.Command("lxrun", "/uninstall", "/full", "/y")
 	err := purgelx.Run()
 	if err != nil {
-		log.Fatalf("ERROR running lxrun: %s", err)
+		//log.Fatalf("ERROR running lxrun: %s", err)
+		ErrMsg("ERROR running Lxrun", err)
 	}
 
 	Prepare2()
@@ -28,7 +29,8 @@ func InstallLx() {
 	installlx.Stdout = &out
 	err := installlx.Run()
 	if err != nil {
-		log.Fatalf("ERROR running lxrun: %s", err)
+		//log.Fatalf("ERROR running lxrun: %s", err)
+		ErrMsg("ERROR running lxrun", err)
 	}
 	Install2()
 	//log.Printf("lxrun stdout: %s", out.String())
