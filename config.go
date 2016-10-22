@@ -1,7 +1,7 @@
 package main
 
 const (
-	AOSC_AMD64_TARBAL = "https://mirror.anthonos.org/aosc-os/os-amd64/base/aosc-os_base_20160926.tar.xz"
+	AOSC_AMD64_TARBAL = "https://mirror.anthonos.org/aosc-os/os-amd64/container/aosc-os_container_20161021.tar.xz"
 	LOG_PREFIX        = "[WSAOSC]@"
 	ABOUT_WSAOSC      = "A small tool that helps you install " +
 		"AOSC on your windows using Windows Subsystem for Linux." +
