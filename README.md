@@ -22,14 +22,7 @@
 HydroDev # or HydroDev build
 ```
 
-##### Old-fashioned Way
-```
-curl https://glide.sh/get | sh
-glide init && glide install
-env GOOS=windows GOARCH=amd64 go build
-```
-
-**These two works for both Unix and Windows, but will only produce Windows/amd64 binary**
+**Though it works for both Unix and Windows, but will only produce Windows/amd64 binary**
 
 ## License
 Gnu Public License V3

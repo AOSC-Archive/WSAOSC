@@ -11,6 +11,9 @@ function config()
         HydroGo.InitDeps()
         HydroGo.InstallDeps()
     end
+    if Common.detectInPath("rsrc") == false then
+        print(color("%{magenta}rsrc tool not found in path !%{reset}\n"))
+    end
 end
 
 function HydroDev.default()
