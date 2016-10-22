@@ -18,7 +18,7 @@
 
 ## Compile
 ##### Using HydroDev
-```
+```bash
 HydroDev # or HydroDev build
 ```
 

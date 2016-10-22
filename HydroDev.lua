@@ -12,7 +12,9 @@ function config()
         HydroGo.InstallDeps()
     end
     if Common.detectInPath("rsrc") == false then
-        print(color("%{magenta}rsrc tool not found in path !%{reset}\n"))
+        print(color("%{magenta}The rsrc tool not found in path. The produced executable may not run!%{reset}\n"))
+    else 
+        print(color("%{green}The rsrc is found in path.%{reset}\n"))
     end
 end
 
