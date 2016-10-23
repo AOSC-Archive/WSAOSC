@@ -1,4 +1,4 @@
-package: gitlab.com/LER0ever/WSAOSC
+package: github.com/LER0ever/WSAOSC
 import:
 - package: github.com/lxn/walk
 - package: github.com/lxn/win
