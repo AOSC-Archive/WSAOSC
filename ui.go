@@ -11,6 +11,8 @@ import (
 
 var mw *walk.MainWindow
 var inTE, statusTE *walk.TextEdit
+var cbSelectTarball *walk.ComboBox
+var compCombo *walk.Composite
 var btDetect, btInstall, btAbout *walk.PushButton
 var progCurr, progTotal *walk.ProgressBar
 var lv *LogView
@@ -35,7 +37,7 @@ func ui() {
 						},
 					},
 					PushButton{
-						Text:     "Install !",
+						Text:     "Install WSAOSC !",
 						Enabled:  false,
 						AssignTo: &btInstall,
 						OnClicked: func() {
@@ -55,6 +57,17 @@ func ui() {
 								ABOUT_WSAOSC,
 								walk.MsgBoxIconInformation)
 						},
+					},
+				},
+			},
+			Composite{
+				MaxSize:  Size{9999, 10},
+				Layout:   Grid{Columns: 10},
+				AssignTo: &compCombo,
+				Visible:  false,
+				Children: []Widget{
+					ComboBox{
+						AssignTo: &cbSelectTarball,
 					},
 				},
 			},
@@ -102,7 +115,6 @@ func ui() {
 	if debug != true {
 		log.SetOutput(lv)
 	}
-
 	mw.Run()
 
 }
@@ -129,4 +141,12 @@ func ErrMsg(text string, v ...interface{}) {
 	CompMsg := fmt.Sprintf(text+":\n%s", v)
 	walk.MsgBox(mw, text, CompMsg, walk.MsgBoxIconError)
 	log.Fatalln(CompMsg)
+}
+
+func DetectMagicKey() {
+	if walk.AltDown() == true {
+		compCombo.SetVisible(true)
+		CustomTarball = true
+		log.Printf("Magic Key detected, using Custom Tarball ...")
+	}
 }

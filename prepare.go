@@ -8,9 +8,13 @@ import (
 // ReadyForInstall : true for ok. Used at the end of preparation
 var ReadyForInstall bool
 
+// CustomTarball : default is false. Press Alt + Detect to enable
+var CustomTarball bool
+
 // Prepare : Detect the system to see if it's compatible for WSL
 func Prepare() {
 	ReadyForInstall = true
+	CustomTarball = false
 	Prepare1()
 }
 
@@ -18,7 +22,7 @@ func Prepare() {
 func Prepare1() {
 	progCurr.SetValue(0)
 	progTotal.SetValue(0)
-
+	DetectMagicKey()
 	// Program already under RUNAS
 	{
 		DetectUAC()
@@ -28,7 +32,7 @@ func Prepare1() {
 	WinArch := GetGoArch()
 	if WinArch == "amd64" {
 		UpdatePrepareProgress(20)
-		log.Printf("You are running 64bit Windows 10, continuing ...")
+		log.Printf("You are running 64bit Windows, continuing ...")
 	}
 	if DetectDevMode() == true {
 		log.Printf(MSG_DEV_MODE_ALREADY_ENABLED)
@@ -48,13 +52,15 @@ func Prepare1() {
 	if Win10Ver >= 14393 {
 		log.Printf("Your Windows 10 Version is newer than or equal to WINTH-Build#14393, continuing ...")
 		UpdatePrepareProgress(50)
+	} else {
+		ErrMsg("Unsupported OS detected", "Do the world a favor, upgrade to Win10 Professional or just use Linux !")
 	}
 	Win10Ed := GetWindows10Edition()
 	if Win10Ed == "Professional" {
 		log.Printf("You are using a Professional Edition, continuing ...")
 		UpdatePrepareProgress(70)
 	} else {
-		WarnMsg("Unsupported OS detected", "Do the world a favor, upgrade to Win10 Professional or just use Linux !")
+		ErrMsg("Unsupported OS detected", "Do the world a favor, upgrade to Win10 Professional or just use Linux !")
 	}
 
 	LxssInstalled := DetectInstalledWSL()
@@ -85,6 +91,10 @@ func Prepare1() {
 func Prepare2() {
 	UpdatePrepareProgress(90)
 	if ReadyForInstall == true {
+		if CustomTarball == true {
+			log.Printf("Downloading AOSC Tarball Repo manifest ...")
+			FillComboTarbal()
+		}
 		log.Printf("Preparing to install AOSC OS on WSL")
 		time.Sleep(500 * time.Millisecond)
 		UpdatePrepareProgress(100)

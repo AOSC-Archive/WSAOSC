@@ -4,3 +4,4 @@ WSAOSC
 aosc.tar.xz
 .idea
 *.syso
+main_test.go

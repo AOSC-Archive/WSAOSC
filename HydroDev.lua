@@ -10,6 +10,8 @@ function config()
     if HydroGo.DetectGlideYaml() == false then
         HydroGo.InitDeps()
         HydroGo.InstallDeps()
+    else
+        HydroGo.InstallDeps()
     end
     if Common.detectInPath("rsrc") == false then
         print(color("%{magenta}The rsrc tool not found in path. The produced executable may not run!%{reset}\n"))
@@ -27,6 +29,10 @@ function target.build()
     Env.Path()
     config()
     HydroGo.build()
+end
+
+function target.run()
+    HydroDev.sh("./WSAOSC.exe")
 end
 
 function target.clean()

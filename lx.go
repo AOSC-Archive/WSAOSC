@@ -48,8 +48,8 @@ func LxCmd(Cmd string) {
 	}
 }
 
-// ExtractBaseTarbal : Extract tarbal with permission info and move rootdir outside
-func ExtractBaseTarbal() {
+// ExtractBaseTarball : Extract tarball with permission info and move rootdir outside
+func ExtractBaseTarball() {
 	UpdateInstallProgress(0)
 	LxCmd("bash -version")
 	log.Printf("Start Extracting AOSC Base RootFS ... \nHold tight. This may take several minutes ...\n")

@@ -3,16 +3,19 @@ package main
 import (
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 	"path"
+	"sort"
 	"strings"
 	"sync"
 	"time"
 
 	"github.com/iovxw/downloader"
+	"golang.org/x/net/html"
 )
 
-// Download: download AOSC Base Nokernel tarbal
+// Download: download AOSC Base Nokernel tarball
 func Download() {
 	file, err := os.Create(path.Join(os.Getenv("localappdata"), "lxss/aosc.tar.xz"))
 	if err != nil {
@@ -20,7 +23,7 @@ func Download() {
 	}
 	defer file.Close()
 
-	fileDl, err := downloader.NewFileDl(AOSC_AMD64_TARBAL, file, -1)
+	fileDl, err := downloader.NewFileDl(AOSC_AMD64_TARBALL, file, -1)
 	if err != nil {
 		log.Println(err)
 	}
@@ -72,4 +75,53 @@ func Download() {
 	fileDl.Start()
 	wg.Wait()
 	Install3()
+}
+
+func GetTarbalURLs() []string {
+	var RetURLs []string
+	resp, _ := http.Get(AOSC_AMD64_REPO)
+	//bytes, _ := ioutil.ReadAll(resp.Body)
+	z := html.NewTokenizer(resp.Body)
+
+	for {
+		tt := z.Next()
+
+		switch {
+		case tt == html.ErrorToken:
+			return RetURLs
+		case tt == html.StartTagToken:
+			t := z.Token()
+
+			isAnchor := t.Data == "a"
+			if isAnchor {
+				for _, a := range t.Attr {
+					if a.Key == "href" {
+						fmt.Println("Found href:", a.Val)
+						a.Val = AOSC_AMD64_REPO + a.Val
+						if !(a.Val[len(a.Val)-9:] == "sha256sum" || a.Val[len(a.Val)-3:] == "../") {
+							RetURLs = append(RetURLs, a.Val)
+						}
+						break
+					}
+				}
+			}
+		}
+	}
+	resp.Body.Close()
+	fmt.Printf("RetURL size: %d", len(RetURLs))
+	for _, url := range RetURLs {
+		fmt.Println(url)
+	}
+	return RetURLs
+}
+
+func GetLatestTarbalURL() string {
+	URLs := GetTarbalURLs()
+	sort.Strings(URLs)
+	return URLs[0]
+}
+
+func FillComboTarbal() {
+	TarbalURLs := GetTarbalURLs
+	cbSelectTarball.SetModel(TarbalURLs)
 }

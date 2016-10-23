@@ -1,5 +1,5 @@
 hash: 58c71e9a24140595b0aff62e5268d568f26a4335e8a489bbdcb345d689509daf
-updated: 2016-10-01T15:00:24.7918808-05:00
+updated: 2016-10-22T17:17:21.6980313-05:00
 imports:
 - name: github.com/iovxw/downloader
   version: 7dbe69ca55136710b47bb96503e4c03008c72b30
@@ -9,6 +9,11 @@ imports:
   - declarative
 - name: github.com/lxn/win
   version: 8855eceee83ca086d647feb3d359a1d2ab6c7ccf
+- name: golang.org/x/net
+  version: f11d7120b19ae21da5715f3e47621736de1b1da9
+  subpackages:
+  - html
+  - html/atom
 - name: golang.org/x/sys
   version: 8f0908ab3b2457e2e15403d3697c9ef5cb4b57a9
   subpackages:

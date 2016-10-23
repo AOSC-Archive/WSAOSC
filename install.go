@@ -18,7 +18,7 @@ func Install1() {
 
 }
 
-// Install2: Download AOSC Tarbal
+// Install2: Download AOSC Tarball
 func Install2() {
 	if DetectInstalledRootfs() == false {
 		WarnMsg("Oops", "ERROR: Install MS Basic RootFS Failed! Exiting ...")
@@ -28,7 +28,7 @@ func Install2() {
 		progCurr.SetValue(100)
 		progTotal.SetValue(30)
 	}
-	log.Printf("Downloading AOSC OS Base Tarbal ...")
+	log.Printf("Downloading AOSC OS Base Tarball ...")
 
 	//var wg sync.WaitGroup
 	//wg.Add(1)
@@ -40,11 +40,11 @@ func Install2() {
 	*/
 }
 
-// Install3: Extract tarbal to /root
+// Install3: Extract tarball to /root
 func Install3() {
 	log.Printf("This should start install3() ...")
 	//time.Sleep(5 * time.Second)
-	go ExtractBaseTarbal()
+	go ExtractBaseTarball()
 	/**/
 }
 
