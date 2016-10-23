@@ -6,6 +6,8 @@ function config()
     print(HydroGo.detectGlide())
     print(HydroGo.DetectGlideYaml())
     HydroGo.setShowAll(true)
+    HydroGo.setTargetOS("windows")
+    HydroGo.setTargetArch("amd64")
     -- HydroGo.setBuildAll(true)
     if HydroGo.DetectGlideYaml() == false then
         HydroGo.InitDeps()

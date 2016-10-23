@@ -20,8 +20,11 @@
 ## Compile
 ##### Using HydroDev under Unix
 ```bash
-# Run under bash
 HydroDev # or HydroDev build
+```
+##### Using HydroDev under Windows
+```bash
+HydroDev NoUnix=true
 ```
 
 **Though the compilation can go under Unix, but will produce Windows/amd64 binary only**
