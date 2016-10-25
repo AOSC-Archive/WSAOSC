@@ -68,7 +68,7 @@ func DetectUAC() {
 	log.Printf("UAC Access: Granted")
 }
 
-// GetGoArch : return the archetecture of the host machine
+// GetGoArch : return the architecture of the host machine
 func GetGoArch() string {
 	log.Printf("Runtime.GOARCH: %s", runtime.GOARCH)
 	return runtime.GOARCH
