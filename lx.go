@@ -88,3 +88,8 @@ func PatchDisplay() {
 	LxCmd(`echo "export DISPLAY=:0.0" >> ~/.bashrc`)
 	UpdateInstallProgress(95)
 }
+
+func PatchWelcome() {
+	LxCmd(`echo "echo -e \"Welcome to \e[96mAOSC OS \e[92m4.0 \e[0mon \e[93mWSL\e[0m\"" >> /etc/profile`)
+	UpdateInstallProgress(98)
+}

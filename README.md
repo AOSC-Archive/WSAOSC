@@ -17,12 +17,12 @@
 5. If everything goes well, Click Install
 6. After Installation, run bash.exe to start AOSC!
 
-## Compile
-##### Using HydroDev under Unix
+## Compile Using HydroDev 
+##### under Unix or WSL
 ```bash
 HydroDev # or HydroDev build
 ```
-##### Using HydroDev under Windows
+##### under Windows
 ```bash
 HydroDev NoUnix=true
 ```
