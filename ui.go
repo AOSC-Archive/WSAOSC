@@ -143,6 +143,7 @@ func ErrMsg(text string, v ...interface{}) {
 	log.Fatalln(CompMsg)
 }
 
+// DetectMagicKey : hidden func, have fun
 func DetectMagicKey() {
 	if walk.AltDown() == true {
 		compCombo.SetVisible(true)

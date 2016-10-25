@@ -15,7 +15,7 @@ import (
 	"golang.org/x/net/html"
 )
 
-// Download: download AOSC Base Nokernel tarball
+// Download : download AOSC Base Nokernel tarball
 func Download() {
 	file, err := os.Create(path.Join(os.Getenv("localappdata"), "lxss/aosc.tar.xz"))
 	if err != nil {
@@ -24,7 +24,7 @@ func Download() {
 	defer file.Close()
 	var fileDl *downloader.FileDl
 	if CustomTarball == false {
-		fileDl, err = downloader.NewFileDl(GetLatestTarbalURL(), file, -1)
+		fileDl, err = downloader.NewFileDl(GetLatestTarballURL(), file, -1)
 	} else {
 		fileDl, err = downloader.NewFileDl(cbSelectTarball.Text(), file, -1)
 	}
@@ -82,7 +82,8 @@ func Download() {
 	Install3()
 }
 
-func GetTarbalURLs() []string {
+// GetTarballURLs returns a slice of strings of tarball URLs
+func GetTarballURLs() []string {
 	var RetURLs []string
 	resp, _ := http.Get(AOSC_AMD64_REPO)
 	//bytes, _ := ioutil.ReadAll(resp.Body)
@@ -120,13 +121,15 @@ func GetTarbalURLs() []string {
 	return RetURLs
 }
 
-func GetLatestTarbalURL() string {
-	URLs := GetTarbalURLs()
+// GetLatestTarballURL : Latest one
+func GetLatestTarballURL() string {
+	URLs := GetTarballURLs()
 	sort.Strings(URLs)
 	return URLs[0]
 }
 
-func FillComboTarbal() {
-	TarbalURLs := GetTarbalURLs()
-	cbSelectTarball.SetModel(TarbalURLs)
+// FillComboTarball : fill combobox with tarball URLs
+func FillComboTarball() {
+	TarballURLs := GetTarballURLs()
+	cbSelectTarball.SetModel(TarballURLs)
 }

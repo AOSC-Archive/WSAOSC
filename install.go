@@ -4,12 +4,12 @@ import "log"
 
 //	"sync"
 
-// Install:
+// Install :
 func Install() {
 	Install1()
 }
 
-// Install1: Install ubuntu LxRootfs
+// Install1 : Install ubuntu LxRootfs
 func Install1() {
 	progCurr.SetValue(0)
 	progTotal.SetValue(20)
@@ -18,7 +18,7 @@ func Install1() {
 
 }
 
-// Install2: Download AOSC Tarball
+// Install2 : Download AOSC Tarball
 func Install2() {
 	if DetectInstalledRootfs() == false {
 		WarnMsg("Oops", "ERROR: Install MS Basic RootFS Failed! Exiting ...")
@@ -40,7 +40,7 @@ func Install2() {
 	*/
 }
 
-// Install3: Extract tarball to /root
+// Install3 : Extract tarball to /root
 func Install3() {
 	log.Printf("This should start install3() ...")
 	//time.Sleep(5 * time.Second)
@@ -48,20 +48,20 @@ func Install3() {
 	/**/
 }
 
-// Install4: Finish Installation
+// Install4 : Finish Installation
 func Install4() {
 	UpdateInstallProgress(100)
 	InfoMsg("AOSC OS successfully installed!", "Your AOSC OS 4.0 on WSL is ready to roll.\n"+
 		"Now open cmd and type bash to have a try.")
 }
 
-// UpdateDownloadProgress: Update two progress bar for Download
+// UpdateDownloadProgress : Update two progress bar for Download
 func UpdateDownloadProgress(progress int) {
 	progCurr.SetValue(progress)
 	progTotal.SetValue(20 + progress*5/10)
 }
 
-// UpdateInstallProgress: Update two progress bar for Install
+// UpdateInstallProgress : Update two progress bar for Install
 func UpdateInstallProgress(progress int) {
 	progCurr.SetValue(progress)
 	progTotal.SetValue(70 + progress*3/10)

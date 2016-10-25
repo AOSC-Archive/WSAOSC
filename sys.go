@@ -142,6 +142,7 @@ func Powershell(Ps string) string {
 	return r
 }
 
+// DetectExecInPath : return if the executable is in PATH
 func DetectExecInPath(executable string) bool {
 	_, err := exec.LookPath(executable)
 	if err != nil {
