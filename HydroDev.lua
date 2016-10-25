@@ -17,6 +17,7 @@ function config()
     end
     if Common.detectInPath("rsrc") == false then
         print(color("%{magenta}The rsrc tool not found in path. The produced executable may not run!%{reset}\n"))
+	HydroDev.sh("go get github.com/akavel/rsrc")
     else 
         print(color("%{green}The rsrc is found in path.%{reset}\n"))
     end
