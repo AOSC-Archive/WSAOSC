@@ -63,6 +63,11 @@ func Prepare1() {
 		ErrMsg("Unsupported OS detected", "Do the world a favor, upgrade to Win10 Professional or just use Linux !")
 	}
 
+	if DetectExecInPath("lxrun") == false {
+		ErrMsg("WSL not enabled", "Sorry to notify, but your WSL is not switched on in Windows features\n"+
+			"Try enable it in \"Programs and Features\" -> \"Turn Windows Features on or off\"")
+	}
+
 	LxssInstalled := DetectInstalledWSL()
 	if LxssInstalled == false {
 		log.Printf("You haven't installed WSL before, continuing ...")
@@ -80,10 +85,6 @@ func Prepare1() {
 		log.Fatalf("Installation Canceled.")*/
 	}
 
-	if DetectExecInPath("lxrun") == false {
-		ErrMsg("WSL not enabled", "Sorry to notify, but your WSL is not switched on in Windows features\n"+
-			"Try enable it in \"Programs and Features\" -> \"Turn Windows Features on or off\"")
-	}
 	//progTotal.SetValue(20)
 }
 

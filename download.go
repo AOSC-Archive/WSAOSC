@@ -22,8 +22,13 @@ func Download() {
 		log.Println(err)
 	}
 	defer file.Close()
+	var fileDl *downloader.FileDl
+	if CustomTarball == false {
+		fileDl, err = downloader.NewFileDl(GetLatestTarbalURL(), file, -1)
+	} else {
+		fileDl, err = downloader.NewFileDl(cbSelectTarball.Text(), file, -1)
+	}
 
-	fileDl, err := downloader.NewFileDl(AOSC_AMD64_TARBALL, file, -1)
 	if err != nil {
 		log.Println(err)
 	}
@@ -98,7 +103,7 @@ func GetTarbalURLs() []string {
 					if a.Key == "href" {
 						fmt.Println("Found href:", a.Val)
 						a.Val = AOSC_AMD64_REPO + a.Val
-						if !(a.Val[len(a.Val)-9:] == "sha256sum" || a.Val[len(a.Val)-3:] == "../") {
+						if !(a.Val[len(a.Val)-9:] == "sha256sum" || a.Val[len(a.Val)-6:] == "md5sum" || a.Val[len(a.Val)-3:] == "../") {
 							RetURLs = append(RetURLs, a.Val)
 						}
 						break
@@ -122,6 +127,6 @@ func GetLatestTarbalURL() string {
 }
 
 func FillComboTarbal() {
-	TarbalURLs := GetTarbalURLs
+	TarbalURLs := GetTarbalURLs()
 	cbSelectTarball.SetModel(TarbalURLs)
 }

@@ -1,7 +1,9 @@
 vendor/
+H2Temp/
 *.exe
 WSAOSC
 aosc.tar.xz
 .idea
 *.syso
 main_test.go
+*.lock

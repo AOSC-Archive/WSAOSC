@@ -1,10 +1,9 @@
 package main
 
 const (
-	AOSC_AMD64_TARBALL = "https://mirror.anthonos.org/aosc-os/os-amd64/container/aosc-os_container_20161021.tar.xz"
-	AOSC_AMD64_REPO    = "https://mirror.anthonos.org/aosc-os/os-amd64/container/"
-	LOG_PREFIX         = "[WSAOSC]@"
-	ABOUT_WSAOSC       = "A small tool that helps you install " +
+	AOSC_AMD64_REPO = "https://mirror.anthonos.org/aosc-os/os-amd64/container/"
+	LOG_PREFIX      = "[WSAOSC]@"
+	ABOUT_WSAOSC    = "A small tool that helps you install " +
 		"AOSC on your windows using Windows Subsystem for Linux. " +
 		"This program is released under GNU General Public License. " +
 		"See github.com/LER0ever/WSAOSC for details."
