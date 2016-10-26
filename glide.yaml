@@ -1,4 +1,11 @@
 package: github.com/AOSC-Dev/WSAOSC
 import:
+- package: github.com/iovxw/downloader
 - package: github.com/lxn/walk
+  subpackages:
+  - declarative
 - package: github.com/lxn/win
+- package: golang.org/x/net/html
+- package: golang.org/x/sys
+  subpackages:
+  - windows/registry
