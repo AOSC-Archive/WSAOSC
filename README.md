@@ -20,6 +20,7 @@
 ## Compile Manually
 ##### under Unix or WSL
 ```bash
+# Assume Golang environment is setup perfectly
 curl https://glide.sh/get | sh # install glide package manager
 go get github.com/akavel/rsrc # download rsrc to embed manifest
 git clone https://github.com/AOSC-Dev/WSAOSC
