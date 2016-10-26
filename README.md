@@ -17,14 +17,16 @@
 5. If everything goes well, Click Install
 6. After Installation, run bash.exe to start AOSC!
 
-## Compile Using HydroDev 
+## Compile Manually
 ##### under Unix or WSL
 ```bash
-HydroDev # or HydroDev build
-```
-##### under Windows
-```bash
-HydroDev NoUnix=true
+curl https://glide.sh/get | sh # install glide package manager
+go get github.com/akavel/rsrc # download rsrc to embed manifest
+git clone https://github.com/AOSC-Dev/WSAOSC
+cd WSAOSC
+glide install
+rsrc -manifest WSAOSC.exe.manifest -ico aosc.ico WSAOSC.syso
+env GOOS=windows GOARCH=amd64 go build
 ```
 
 **Though the compilation can go under Unix, but will produce Windows/amd64 binary only**
