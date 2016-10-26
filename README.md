@@ -1,5 +1,5 @@
 # WSAOSC
-[![Go Report Card](https://goreportcard.com/badge/github.com/LER0ever/WSAOSC)](https://goreportcard.com/report/github.com/LER0ever/WSAOSC)  
+[![Go Report Card](https://goreportcard.com/badge/github.com/AOSC-Dev/WSAOSC)](https://goreportcard.com/report/github.com/AOSC-Dev/WSAOSC)  
 (WIP) AOSC OS on WSL
 
 ## Feature
