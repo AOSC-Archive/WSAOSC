@@ -69,7 +69,6 @@ func Prepare1() {
 	}
 
 	LxssInstalled := DetectInstalledWSL()
-	LxssInstalled = false
 	if LxssInstalled == false {
 		log.Printf("You haven't installed WSL before, continuing ...")
 		Prepare2()
