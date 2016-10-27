@@ -1,0 +1,40 @@
+version: "0.0.1"
+os: Windows Server 2012 R2
+clone_folder: c:\gopath\src\github.com\AOSC-Dev\WSAOSC
+
+environment:
+  GOPATH: c:\gopath
+  GO15VENDOREXPERIMENT: 1
+
+install:
+  - set PATH=%GOPATH%\bin;c:\go\bin;%PATH%
+  - go version
+  - go env
+  - go get -u github.com/Masterminds/glide
+
+build_script:
+  - glide install
+  - set GOARCH=amd64
+  - go build
+  - md WSAOSC
+  - move WSAOSC.exe WSAOSC
+
+test: off
+
+artifacts:
+  - path: 'WSAOSC'
+    name: WSAOSC
+
+deploy:
+  - provider: GitHub
+    artifact: WSAOSC
+    draft: false
+    prerelease: false
+    description: "Release %APPVEYOR_REPO_TAG_NAME%"
+    auth_token: 
+    on:
+      branch:
+        - master
+        - /v\d\.\d\.\d/
+        - /\d\.\d\.\d/
+      appveyor_repo_tag: true
