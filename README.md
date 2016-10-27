@@ -20,7 +20,7 @@
 ## Compile Manually
 ##### under Unix or WSL
 ```bash
-# Assume Golang environment is setup perfectly
+# Assume Golang environment is set up properly
 curl https://glide.sh/get | sh # install glide package manager
 go get github.com/akavel/rsrc # download rsrc to embed manifest
 git clone https://github.com/AOSC-Dev/WSAOSC
@@ -30,7 +30,7 @@ rsrc -manifest WSAOSC.exe.manifest -ico aosc.ico WSAOSC.syso
 env GOOS=windows GOARCH=amd64 go build
 ```
 ##### under Windows (64 bit only)
-1. Setup up go dev environment properly
+1. Set up go dev environment properly
 2. Download glide from [glide.sh](https://glide.sh) and put it into PATH
 3. ```git clone https://github.com/AOSC-Dev/WSAOSC.git # to %GOPATH%/src/github.com/AOSC-Dev/WSAOSC.git```
 4. Enter the WSAOSC directory
@@ -38,7 +38,7 @@ env GOOS=windows GOARCH=amd64 go build
 6. ```rsrc -manifest WSAOSC.exe.manifest -ico aosc.ico WSAOSC.syso```
 7. **go build**
 
-**Though the compilation can go under Unix, but will produce Windows/amd64 binary only**
+**The compilation can go under Unix, but will produce Windows/amd64 binary only**
 
 ## License
 GNU General Public License V3
