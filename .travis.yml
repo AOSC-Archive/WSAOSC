@@ -12,6 +12,7 @@ before_deploy:
     - mkdir -p WSAOSC
     - mv WSAOSC.exe WSAOSC
     - zip -r WSAOSC.zip WSAOSC
+    - ls -l
 deploy:
     skip_cleanup: true
     provider: releases
