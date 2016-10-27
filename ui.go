@@ -62,12 +62,16 @@ func ui() {
 			},
 			Composite{
 				MaxSize:  Size{9999, 10},
-				Layout:   Grid{Columns: 10},
+				Layout:   Grid{Rows: 2},
 				AssignTo: &compCombo,
 				Visible:  false,
 				Children: []Widget{
 					ComboBox{
 						AssignTo: &cbSelectTarball,
+						Editable: true,
+					},
+					Label{
+						Text: "You may also type in custom URL to system tarballs, e.g. http://www.example.com/system.tar.xz",
 					},
 				},
 			},
