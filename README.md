@@ -10,7 +10,7 @@
 - Two-Click Install :)
 
 ## Get Started
-1. Grab a WSAOSC binary
+1. Grab a WSAOSC binary from CI: [WSAOSC.zip](https://ci.appveyor.com/api/projects/LER0ever/WSAOSC/artifacts/WSAOSC.zip) 
 2. Enable Windows Subsystem for Linux and Developer Mode(restart needed)
 3. Double Click on WSAOSC.exe
 4. Click Detect
