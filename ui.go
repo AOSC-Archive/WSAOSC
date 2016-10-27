@@ -91,7 +91,7 @@ func ui() {
 				//StretchFactor: 10,
 				Children: []Widget{
 					Label{
-						Text: "Total Progress",
+						Text: "Overall  Progress",
 						//Size: Size{20, 10},
 					},
 					ProgressBar{

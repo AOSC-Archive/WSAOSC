@@ -35,7 +35,7 @@ env GOOS=windows GOARCH=amd64 go build
 3. ```git clone https://github.com/AOSC-Dev/WSAOSC.git # to %GOPATH%/src/github.com/AOSC-Dev/WSAOSC.git```
 4. Enter the WSAOSC directory
 5. ```glide install```
-6. ```rsrc -manifest WSAOSC.exe.manifest -ico aosc.ico WSAOSC.syso```
+6. ```rsrc -manifest WSAOSC.exe.manifest -ico AOSC.ico WSAOSC.syso```
 7. **go build**
 
 **The compilation can go under Unix, but will produce Windows/amd64 binary only**
