@@ -1,18 +1,22 @@
 language: go
 go: 1.7
+
 before_install:
     - sudo apt-get -y install p7zip-full
+
 scripts:
     - curl https://glide.sh/get | sh
     - go get github.com/akavel/rsrc
     - glide install
     - rsrc -manifest WSAOSC.exe.manifest -ico aosc.ico WSAOSC.syso
     - env GOOS=windows GOARCH=amd64 go build
+
 before_deploy:
     - mkdir -p WSAOSC
     - mv WSAOSC.exe WSAOSC
     - zip -r WSAOSC.zip WSAOSC
     - ls -l
+
 deploy:
     skip_cleanup: true
     provider: releases
