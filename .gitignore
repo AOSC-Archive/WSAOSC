@@ -7,3 +7,4 @@ aosc.tar.xz
 *.syso
 main_test.go
 *.lock
+HydroDev.lua

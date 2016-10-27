@@ -94,7 +94,7 @@ func Prepare2() {
 	if ReadyForInstall == true {
 		if CustomTarball == true {
 			log.Printf("Downloading AOSC Tarball Repo manifest ...")
-			FillComboTarbal()
+			FillComboTarball()
 		}
 		log.Printf("Preparing to install AOSC OS on WSL")
 		time.Sleep(500 * time.Millisecond)
