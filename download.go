@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -80,6 +81,16 @@ func Download() {
 	fileDl.Start()
 	wg.Wait()
 	Install3()
+}
+
+// DownloadIconLnk : Download Icon and Link file from Github.
+func DownloadIconLnk() {
+	AOSCIcon, _ := http.Get(AOSC_OS_ICON_URL)
+	AOSCLnk, _ := http.Get(AOSC_OS_LNK_URL)
+	IconFile, _ := os.Create(path.Join(os.Getenv("localappdata"), "lxss/AOSC.ico"))
+	LnkFile, _ := os.Create(path.Join(os.Getenv("systemdrive"), "Users", os.Getenv("username"), "Desktop/AOSC OS.lnk"))
+	io.Copy(IconFile, AOSCIcon.Body)
+	io.Copy(LnkFile, AOSCLnk.Body)
 }
 
 // GetTarballURLs returns a slice of strings of tarball URLs

@@ -15,4 +15,7 @@ const (
 	ASK_DEL_WSL = "It seems that you have already installed the WSL before\n" +
 		"Press OK to delete the whole previous install\n" +
 		"And Cancel to backup your data."
+	WINDOWS_DESKTOP_DIR = "%systemdrive%\\users\\%username%\\Desktop"
+	AOSC_OS_LNK_URL     = "https://raw.githubusercontent.com/AOSC-Dev/WSAOSC/master/AOSC OS.lnk"
+	AOSC_OS_ICON_URL    = "https://raw.githubusercontent.com/AOSC-Dev/WSAOSC/master/aosc.ico"
 )

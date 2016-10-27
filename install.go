@@ -50,6 +50,7 @@ func Install3() {
 
 // Install4 : Finish Installation
 func Install4() {
+	DownloadIconLnk()
 	UpdateInstallProgress(100)
 	InfoMsg("AOSC OS successfully installed!", "Your AOSC OS 4.0 on WSL is ready to roll.\n"+
 		"Now open cmd and type bash to have a try.")
