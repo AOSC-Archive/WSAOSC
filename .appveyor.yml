@@ -11,10 +11,12 @@ install:
   - go version
   - go env
   - go get -u github.com/Masterminds/glide
+  - go get github.com/akavel/rsrc
 
 build_script:
   - glide install
   - set GOARCH=amd64
+  - rsrc -manifest WSAOSC.exe.manifest -ico aosc.ico WSAOSC.syso
   - go build
   - md WSAOSC
   - move WSAOSC.exe WSAOSC
