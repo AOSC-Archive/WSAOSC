@@ -38,7 +38,9 @@ func Prepare1() {
 		log.Printf(MSG_DEV_MODE_ALREADY_ENABLED)
 		UpdatePrepareProgress(30)
 	} else {
-		if AskMsg("DevMode Required!", ASK_DEV_MODE) == true {
+		ReadyForInstall = false
+		ErrMsg("DevMode not enabled", "Installation canceled due to DevMode not enabled, please turn it on at settings->updates&security->Developer Mode")
+		/*if AskMsg("DevMode Required!", ASK_DEV_MODE) == true {
 			EnableDevMode()
 			log.Printf(MSG_DEV_MODE_JUST_ENABLED)
 			UpdatePrepareProgress(30)
@@ -46,7 +48,7 @@ func Prepare1() {
 			ReadyForInstall = false
 			ErrMsg("Installation Canceled", "Installation canceled due to previous err")
 			//log.Fatal("Installation Canceled")
-		}
+		}*/
 	}
 	Win10Ver := GetWindow10Version()
 	if Win10Ver >= 14393 {
