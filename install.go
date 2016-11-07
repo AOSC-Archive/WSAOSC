@@ -1,6 +1,7 @@
 package main
 
 import "log"
+import "time"
 
 //	"sync"
 
@@ -52,6 +53,7 @@ func Install3() {
 func Install4() {
 	DownloadIconLnk()
 	UpdateInstallProgress(100)
+	time.Sleep(200 * time.Millisecond)
 	InfoMsg("AOSC OS successfully installed!", "Your AOSC OS 4.0 on WSL is ready to roll.\n"+
 		"Now open cmd and type bash to have a try.")
 }
