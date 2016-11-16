@@ -30,14 +30,14 @@ func ui() {
 				MaxSize: Size{9999, 50},
 				Children: []Widget{
 					PushButton{
-						Text:     "Detect Your System",
+						Text:     "Detect System",
 						AssignTo: &btDetect,
 						OnClicked: func() {
 							Prepare()
 						},
 					},
 					PushButton{
-						Text:     "Install WSAOSC !",
+						Text:     "Install WSAOSC!",
 						Enabled:  false,
 						AssignTo: &btInstall,
 						OnClicked: func() {
@@ -95,7 +95,7 @@ func ui() {
 				//StretchFactor: 10,
 				Children: []Widget{
 					Label{
-						Text: "Overall  Progress",
+						Text: "Overall Progress",
 						//Size: Size{20, 10},
 					},
 					ProgressBar{
