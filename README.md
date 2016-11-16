@@ -13,9 +13,21 @@
 1. Grab a WSAOSC binary from CI: [WSAOSC.zip](https://ci.appveyor.com/api/projects/LER0ever/WSAOSC/artifacts/WSAOSC.zip) 
 2. Enable Windows Subsystem for Linux and Developer Mode(restart needed)
 3. Double Click on WSAOSC.exe
+
+#### Default Install (latest AOSC container tarball)
 4. Click Detect
 5. If everything goes well, Click Install
 6. After Installation, run bash.exe to start AOSC!
+
+#### Customized Install 
+4. Hold `Alt` while click Detect
+5. If everything goes well, continue to 6.
+6. Choose a tarball in the combo box or type third-party tarbal URL.
+7. Click Install and it will handle the rest.
+
+Currently functioning tarball: 
+- AOSC (default)
+- Archlinux, Deepin, Manjaro (you may need to do a unpack-and-repack stuff)
 
 ## Compile Manually
 ##### under Unix or WSL
