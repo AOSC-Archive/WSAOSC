@@ -128,7 +128,7 @@ bool install_distor(void)
 		}
 		else
 		{
-			printf("Installation failed! (%X)\n", hr);
+			printf("Installation failed! (0x%X)\n", hr);
 		}
 	}
 	else
@@ -153,7 +153,7 @@ bool uninstall_distor(void)
 		}
 		else
 		{
-			printf("Failed to remove! (%X)\n", hr);
+			printf("Failed to remove distor! (0x%X)\n", hr);
 		}
 	}
 	else
