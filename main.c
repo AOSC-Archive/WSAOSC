@@ -122,6 +122,9 @@ bool run_wsl(int argc, wchar_t *argv[])
 
 	DWORD exit_code;
 	HRESULT hr = _WslLaunchInteractive(DISTOR_NAME, command_line, TRUE, &exit_code);
+
+	free(command_line);
+
 	return SUCCEEDED(hr);
 }
 
