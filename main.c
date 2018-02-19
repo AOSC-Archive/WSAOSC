@@ -16,13 +16,13 @@
 
 #include "wslutil.h"
 
-#define DISTOR_NAME L"AOSC"
+#define DISTOR_NAME L"AOSC-OS"
 
 void print_help(void)
 {
 	puts(
-		"WSAOSC Utility\n"
-		"Usage: aosc [<command>]\n\n"
+		"AOSC OS for WSL Utility\n"
+		"Usage: aosc-os [<command>]\n\n"
 		"Commands:\n"
 		"  run/exec [<command line>] - Run command line in WSL.\n\n"
 		"  config [<option> <value>] - Configure or show distor settings.\n"
@@ -101,7 +101,7 @@ HRESULT new_user(void)
 
 bool install_distor(void)
 {
-	fputs("Will install AOSC for WSL, continue? [y/N] ", stdout);
+	fputs("Will install AOSC OS for WSL, continue? [y/N] ", stdout);
 
 	char ch = getchar();
 	char c;
@@ -140,7 +140,7 @@ bool install_distor(void)
 
 bool uninstall_distor(void)
 {
-	fputs("Will uninstall AOSC for WSL, continue? [y/N] ", stdout);
+	fputs("Will uninstall AOSC OS for WSL, continue? [y/N] ", stdout);
 	char ch = getchar();
 	if (tolower(ch) == 'y')
 	{
