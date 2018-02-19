@@ -67,6 +67,31 @@ bool install_distor(void)
 	return false;
 }
 
+bool uninstall_distor(void)
+{
+	fputs("Will uninstall AOSC for WSL, continue? [y/N] ", stdout);
+	char ch = getchar();
+	if (tolower(ch) == 'y')
+	{
+		puts("Removing filesystem...");
+		HRESULT hr = _WslUnregisterDistribution(DISTOR_NAME);
+		if (SUCCEEDED(hr))
+		{
+			puts("Successfully removed distro.");
+			return true;
+		}
+		else
+		{
+			printf("Failed to remove! (%X)\n", hr);
+		}
+	}
+	else
+	{
+		puts("Abort.");
+	}
+	return false;
+}
+
 bool run_wsl(int argc, wchar_t *argv[])
 {
 	size_t command_len = 0;
@@ -145,6 +170,8 @@ int main(void)
 		}
 		else if (wcscmp(command, L"uninstall") == 0 || wcscmp(command, L"clean") == 0)
 		{
+			if (!uninstall_distor())
+				retval = 1;
 		}
 		else
 		{
