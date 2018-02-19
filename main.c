@@ -21,7 +21,16 @@ void print_help(void)
 {
 	puts(
 		"WSAOSC Utility\n"
-		"Usage: aosc command\n"
+		"Usage: aosc [<command>]\n\n"
+		"Commands:\n"
+		"  run/exec [<command line>] - Run command line in WSL.\n\n"
+		"  config [<option> <value>] - Configure or show distor settings.\n"
+		"    options:\n"
+		"      enable-interop <true/false>\n"
+		"      append-nt-path <true/false>\n"
+		"      enable-drive-mounting <true/false>\n\n"
+		"  uninstall/clean - Uninstall the distro.\n\n"
+		"  help - Print this message."
 	);
 }
 
