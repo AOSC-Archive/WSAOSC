@@ -1,6 +1,7 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <shellapi.h>
+#include <objbase.h>
 
 #include <stdio.h>
 #include <wchar.h>
@@ -128,6 +129,87 @@ bool run_wsl(int argc, wchar_t *argv[])
 	return SUCCEEDED(hr);
 }
 
+bool config(int argc, wchar_t *argv[])
+{
+	if (argc < 2)
+	{
+		ULONG distor_version, default_uid, env_count;
+		WSL_DISTRIBUTION_FLAGS distor_flags;
+		PSTR *env;
+		HRESULT hr = _WslGetDistributionConfiguration(DISTOR_NAME, &distor_version, &default_uid, &distor_flags, &env, &env_count);
+		if (FAILED(hr))
+			return false;
+
+		for (ULONG i = 0; i < env_count; i++)
+			CoTaskMemFree(env[i]);
+		CoTaskMemFree(env);
+
+		bool enable_interop = (distor_flags & WSL_DISTRIBUTION_FLAGS_ENABLE_INTEROP);
+		bool append_nt_path = (distor_flags & WSL_DISTRIBUTION_FLAGS_APPEND_NT_PATH);
+		bool enable_drive_mounting = (distor_flags & WSL_DISTRIBUTION_FLAGS_ENABLE_DRIVE_MOUNTING);
+
+		printf(
+			"enable-interop %s\n"
+			"append-nt-path %s\n"
+			"enable-drive-mounting %s\n",
+			enable_interop ? "true" : "false",
+			append_nt_path ? "true" : "false",
+			enable_drive_mounting ? "true" : "false");
+	}
+	else
+	{
+		wchar_t *option = argv[0];
+		wchar_t *value = argv[1];
+
+		WSL_DISTRIBUTION_FLAGS flag;
+		if (wcscmp(option, L"enable-interop") == 0)
+			flag = WSL_DISTRIBUTION_FLAGS_ENABLE_INTEROP;
+		else if (wcscmp(option, L"append-nt-path") == 0)
+			flag = WSL_DISTRIBUTION_FLAGS_APPEND_NT_PATH;
+		else if (wcscmp(option, L"enable-drive-mounting") == 0)
+			flag = WSL_DISTRIBUTION_FLAGS_ENABLE_DRIVE_MOUNTING;
+		else
+		{
+			printf("Invaild option '%ls'!", option);
+			return false;
+		}
+
+		bool enable = false;
+		if (wcscmp(value, L"true") == 0)
+			enable = true;
+		else if (wcscmp(value, L"false") == 0)
+		{
+			// pass
+		}
+		else
+		{
+			printf("Invaild value '%ls' for option '%ls'!", value, option);
+			return false;
+		}
+
+		ULONG distor_version, default_uid, env_count;
+		WSL_DISTRIBUTION_FLAGS distor_flags;
+		PSTR *env;
+		HRESULT hr = _WslGetDistributionConfiguration(DISTOR_NAME, &distor_version, &default_uid, &distor_flags, &env, &env_count);
+		if (FAILED(hr))
+			return false;
+
+		for (ULONG i = 0; i < env_count; i++)
+			CoTaskMemFree(env[i]);
+		CoTaskMemFree(env);
+
+		if (enable)
+			distor_flags |= flag;
+		else
+			distor_flags &= ~flag;
+
+		hr = _WslConfigureDistribution(DISTOR_NAME, default_uid, distor_flags);
+
+		return SUCCEEDED(hr);
+	}
+	return true;
+}
+
 int main(void)
 {
 	if (!load_wsl_api())
@@ -170,6 +252,8 @@ int main(void)
 		}
 		else if (wcscmp(command, L"config") == 0)
 		{
+			if (!config(argc - 2, argv + 2))
+				retval = 1;
 		}
 		else if (wcscmp(command, L"uninstall") == 0 || wcscmp(command, L"clean") == 0)
 		{
