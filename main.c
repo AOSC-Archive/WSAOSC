@@ -104,6 +104,8 @@ bool install_distor(void)
 	fputs("Will install AOSC for WSL, continue? [y/N] ", stdout);
 
 	char ch = getchar();
+	char c;
+	while ((c = getchar()) != '\n' && c != EOF);
 	if (tolower(ch) == 'y')
 	{
 		puts("Installing, this may take a few minutes...");
