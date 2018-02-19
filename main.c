@@ -35,6 +35,70 @@ void print_help(void)
 	);
 }
 
+HRESULT new_user(void)
+{
+	HRESULT hr;
+	DWORD exit_code;
+	char username[33];
+	wchar_t command[64];
+	do {
+		fputs("Enter new UNIX username: ", stdout);
+		gets_s(username, sizeof(username));
+
+		if (strlen(username) == 0)
+			continue;
+
+		swprintf(command, ARRAYSIZE(command), L"useradd -m %hs", username);
+
+		hr = _WslLaunchInteractive(DISTOR_NAME, command, FALSE, &exit_code);
+	} while (FAILED(hr) || exit_code != 0);
+
+	swprintf(command, ARRAYSIZE(command), L"usermod -aG sudo %hs", username);
+	hr = _WslLaunchInteractive(DISTOR_NAME, command, FALSE, &exit_code);
+	if (SUCCEEDED(hr) && exit_code == 0)
+	{
+		swprintf(command, ARRAYSIZE(command), L"passwd %hs", username);
+		do {
+			hr = _WslLaunchInteractive(DISTOR_NAME, command, FALSE, &exit_code);
+		} while (FAILED(hr) || exit_code != 0);
+
+		HANDLE read_pipe, write_pipe;
+		SECURITY_ATTRIBUTES sec_attr;
+		sec_attr.nLength = sizeof(SECURITY_ATTRIBUTES);
+		sec_attr.lpSecurityDescriptor = NULL;
+		sec_attr.bInheritHandle = TRUE;
+
+		if (CreatePipe(&read_pipe, &write_pipe, &sec_attr, 0))
+		{
+			swprintf(command, ARRAYSIZE(command), L"id -u %hs", username);
+
+			HANDLE handle_stdin = GetStdHandle(STD_INPUT_HANDLE);
+			HANDLE handle_stderr = GetStdHandle(STD_ERROR_HANDLE);
+			HANDLE process_handle;
+			hr = _WslLaunch(DISTOR_NAME, command, FALSE, handle_stdin, write_pipe, handle_stderr, &process_handle);
+			if (SUCCEEDED(hr))
+			{
+				WaitForSingleObject(process_handle, INFINITE);
+				GetExitCodeProcess(process_handle, &exit_code);
+				CloseHandle(process_handle);
+
+				if (exit_code == 0)
+				{
+					char uid_string[16];
+					DWORD byte_read;
+					if (ReadFile(read_pipe, uid_string, 15, &byte_read, NULL))
+					{
+						uid_string[byte_read] = '\0';
+						ULONG uid = strtoul(uid_string, NULL, 10);
+						hr = _WslConfigureDistribution(DISTOR_NAME, uid, WSL_DISTRIBUTION_FLAGS_DEFAULT);
+					}
+				}
+			}
+		}
+	}
+	return hr;
+}
+
 bool install_distor(void)
 {
 	fputs("Will install AOSC for WSL, continue? [y/N] ", stdout);
@@ -45,10 +109,14 @@ bool install_distor(void)
 		puts("Installing, this may take a few minutes...");
 
 		HRESULT hr = _WslRegisterDistribution(DISTOR_NAME, L"install.tar.gz");
-
 		if (SUCCEEDED(hr))
 		{
-			hr = _WslConfigureDistribution(DISTOR_NAME, 0, WSL_DISTRIBUTION_FLAGS_DEFAULT);
+			DWORD exit_code;
+			hr = _WslLaunchInteractive(DISTOR_NAME, L"groupadd sudo && sed -i 's/^#\\s*\\(%sudo\\)/\\1/' /etc/sudoers", FALSE, &exit_code);
+			if (SUCCEEDED(hr))
+			{
+				hr = new_user();
+			}
 		}
 
 		if (SUCCEEDED(hr))
