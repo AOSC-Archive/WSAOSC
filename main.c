@@ -9,6 +9,8 @@
 
 #include "wslutil.h"
 
+#define DISTOR_NAME L"AOSC"
+
 void print_help(void)
 {
 	puts(
@@ -17,14 +19,37 @@ void print_help(void)
 	);
 }
 
-void install_distor(void)
+bool install_distor(void)
 {
-	fputs("Will install AOSC for WSL, continue? [y/N]", stdout);
+	fputs("Will install AOSC for WSL, continue? [y/N] ", stdout);
+
 	char ch = getchar();
 	if (tolower(ch) == 'y')
 	{
+		puts("Installing, this may take a few minutes...");
 
+		HRESULT hr = _WslRegisterDistribution(DISTOR_NAME, L"install.tar.gz");
+
+		if (SUCCEEDED(hr))
+		{
+			hr = _WslConfigureDistribution(DISTOR_NAME, 0, WSL_DISTRIBUTION_FLAGS_DEFAULT);
+		}
+
+		if (SUCCEEDED(hr))
+		{
+			puts("Installation successful!");
+			return true;
+		}
+		else
+		{
+			printf("Installation failed! (%X)\n", hr);
+		}
 	}
+	else
+	{
+		puts("Abort.");
+	}
+	return false;
 }
 
 int main(void)
@@ -43,10 +68,20 @@ int main(void)
 		return 1;
 	}
 
+	int retval = 0;
 	do {
+		if (!_WslIsDistributionRegistered(DISTOR_NAME))
+		{
+			if (!install_distor())
+			{
+				retval = 1;
+				break;
+			}
+		}
+
 		if (argc < 2)
 		{
-			print_help();
+			// run without args
 			break;
 		}
 
@@ -57,21 +92,18 @@ int main(void)
 		else if (wcscmp(command, L"config") == 0)
 		{
 		}
-		else if (wcscmp(command, L"install") == 0)
-		{
-			install_distor();
-		}
 		else if (wcscmp(command, L"uninstall") == 0 || wcscmp(command, L"clean") == 0)
 		{
 		}
 		else
 		{
 			print_help();
+			retval = 1;
 		}
 
 	} while (0);
 
 	LocalFree(argv);
 
-	return 0;
+	return retval;
 }
