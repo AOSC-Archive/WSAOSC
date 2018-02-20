@@ -166,7 +166,7 @@ bool uninstall_distor(void)
 	return false;
 }
 
-bool run_wsl(int argc, wchar_t *argv[])
+int run_wsl(int argc, wchar_t *argv[])
 {
 	size_t command_len = 0;
 	for (int i = 0; i < argc; i++)
@@ -199,7 +199,7 @@ bool run_wsl(int argc, wchar_t *argv[])
 
 	free(command_line);
 
-	return SUCCEEDED(hr);
+	return exit_code;
 }
 
 bool config(int argc, wchar_t *argv[])
@@ -312,16 +312,14 @@ int main(void)
 
 		if (argc < 2)
 		{
-			if (!run_wsl(0, NULL))
-				retval = 1;
+			retval = run_wsl(0, NULL);
 			break;
 		}
 
 		wchar_t *command = argv[1];
 		if (wcscmp(command, L"run") == 0 || wcscmp(command, L"exec") == 0)
 		{
-			if (!run_wsl(argc - 2, argv + 2))
-				retval = 1;
+			retval = run_wsl(argc - 2, argv + 2);
 		}
 		else if (wcscmp(command, L"config") == 0)
 		{
