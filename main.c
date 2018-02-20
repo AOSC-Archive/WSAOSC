@@ -15,6 +15,7 @@
 #endif /* _MSC_VER */
 
 #include "wslutil.h"
+#include "my_gets.h"
 
 #define DISTOR_NAME L"AOSC-OS"
 
@@ -43,7 +44,7 @@ HRESULT new_user(void)
 	wchar_t command[64];
 	do {
 		fputs("Enter new UNIX username: ", stdout);
-		gets_s(username, sizeof(username));
+		my_gets_s(username, sizeof(username));
 
 		if (strlen(username) == 0)
 			continue;
