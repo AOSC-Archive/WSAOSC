@@ -199,6 +199,12 @@ int run_wsl(int argc, wchar_t *argv[])
 
 	free(command_line);
 
+	if (FAILED(hr))
+	{
+		printf("Error: 0x%X\n", hr);
+		return 1;
+	}
+
 	return exit_code;
 }
 
