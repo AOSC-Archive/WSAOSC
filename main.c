@@ -88,6 +88,9 @@ HRESULT new_user(void)
 					DWORD byte_read;
 					if (ReadFile(read_pipe, uid_string, 15, &byte_read, NULL))
 					{
+						CloseHandle(read_pipe);
+						CloseHandle(write_pipe);
+
 						uid_string[byte_read] = '\0';
 						ULONG uid = strtoul(uid_string, NULL, 10);
 						hr = _WslConfigureDistribution(DISTOR_NAME, uid, WSL_DISTRIBUTION_FLAGS_DEFAULT);
