@@ -65,4 +65,26 @@ bool load_wsl_api(void)
 	return true;
 }
 
+bool get_wsl_distro_config(const wchar_t *distor_name, ULONG *default_uid, WSL_DISTRIBUTION_FLAGS *distor_flags)
+{
+	ULONG distor_version, _default_uid, env_count;
+	WSL_DISTRIBUTION_FLAGS _distor_flags;
+	PSTR *env;
+	HRESULT hr = _WslGetDistributionConfiguration(distor_name, &distor_version, &_default_uid, &_distor_flags, &env, &env_count);
+	if (FAILED(hr))
+		return false;
+
+	for (ULONG i = 0; i < env_count; i++)
+		CoTaskMemFree(env[i]);
+	CoTaskMemFree(env);
+
+	if (default_uid)
+		*default_uid = _default_uid;
+
+	if (distor_flags)
+		*distor_flags = _distor_flags;
+
+	return true;
+}
+
 #endif /* _WSL_UTIL */
