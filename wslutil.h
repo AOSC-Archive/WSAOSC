@@ -87,4 +87,48 @@ bool get_wsl_distro_config(const wchar_t *distor_name, ULONG *default_uid, WSL_D
 	return true;
 }
 
+ULONG uid_from_username(const wchar_t *distor_name, const wchar_t *username)
+{
+	HANDLE read_pipe, write_pipe;
+	SECURITY_ATTRIBUTES sec_attr;
+	sec_attr.nLength = sizeof(SECURITY_ATTRIBUTES);
+	sec_attr.lpSecurityDescriptor = NULL;
+	sec_attr.bInheritHandle = TRUE;
+
+	if (CreatePipe(&read_pipe, &write_pipe, &sec_attr, 0))
+	{
+		wchar_t command[64];
+		swprintf(command, ARRAYSIZE(command), L"id -u %s", username);
+
+		HANDLE handle_stdin = GetStdHandle(STD_INPUT_HANDLE);
+		HANDLE handle_stderr = GetStdHandle(STD_ERROR_HANDLE);
+		HANDLE process_handle;
+		HRESULT hr = _WslLaunch(distor_name, command, FALSE, handle_stdin, write_pipe, handle_stderr, &process_handle);
+		if (SUCCEEDED(hr))
+		{
+			DWORD exit_code;
+			WaitForSingleObject(process_handle, INFINITE);
+			GetExitCodeProcess(process_handle, &exit_code);
+			CloseHandle(process_handle);
+
+			if (exit_code == 0)
+			{
+				char uid_string[16];
+				DWORD byte_read;
+				if (ReadFile(read_pipe, uid_string, 15, &byte_read, NULL))
+				{
+					CloseHandle(read_pipe);
+					CloseHandle(write_pipe);
+
+					uid_string[byte_read] = '\0';
+					ULONG uid = strtoul(uid_string, NULL, 10);
+
+					return uid;
+				}
+			}
+		}
+	}
+	return ULONG_MAX;
+}
+
 #endif /* _WSL_UTIL */
