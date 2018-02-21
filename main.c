@@ -63,42 +63,13 @@ HRESULT new_user(void)
 			hr = _WslLaunchInteractive(DISTOR_NAME, command, FALSE, &exit_code);
 		} while (FAILED(hr) || exit_code != 0);
 
-		HANDLE read_pipe, write_pipe;
-		SECURITY_ATTRIBUTES sec_attr;
-		sec_attr.nLength = sizeof(SECURITY_ATTRIBUTES);
-		sec_attr.lpSecurityDescriptor = NULL;
-		sec_attr.bInheritHandle = TRUE;
+		wchar_t username_w[33];
+		for (int i = 0; i < ARRAYSIZE(username_w) && username[i]; i++)
+			username_w[i] = username[i];
 
-		if (CreatePipe(&read_pipe, &write_pipe, &sec_attr, 0))
-		{
-			swprintf(command, ARRAYSIZE(command), L"id -u %hs", username);
-
-			HANDLE handle_stdin = GetStdHandle(STD_INPUT_HANDLE);
-			HANDLE handle_stderr = GetStdHandle(STD_ERROR_HANDLE);
-			HANDLE process_handle;
-			hr = _WslLaunch(DISTOR_NAME, command, FALSE, handle_stdin, write_pipe, handle_stderr, &process_handle);
-			if (SUCCEEDED(hr))
-			{
-				WaitForSingleObject(process_handle, INFINITE);
-				GetExitCodeProcess(process_handle, &exit_code);
-				CloseHandle(process_handle);
-
-				if (exit_code == 0)
-				{
-					char uid_string[16];
-					DWORD byte_read;
-					if (ReadFile(read_pipe, uid_string, 15, &byte_read, NULL))
-					{
-						CloseHandle(read_pipe);
-						CloseHandle(write_pipe);
-
-						uid_string[byte_read] = '\0';
-						ULONG uid = strtoul(uid_string, NULL, 10);
-						hr = _WslConfigureDistribution(DISTOR_NAME, uid, WSL_DISTRIBUTION_FLAGS_DEFAULT);
-					}
-				}
-			}
-		}
+		ULONG uid = uid_from_username(DISTOR_NAME, username_w);
+		if (uid != ULONG_MAX)
+			hr = _WslConfigureDistribution(DISTOR_NAME, uid, WSL_DISTRIBUTION_FLAGS_DEFAULT);
 	}
 	return hr;
 }
