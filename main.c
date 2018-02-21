@@ -30,7 +30,9 @@ void print_help(void)
 		"    options:\n"
 		"      enable-interop <true/false>\n"
 		"      append-nt-path <true/false>\n"
-		"      enable-drive-mounting <true/false>\n\n"
+		"      enable-drive-mounting <true/false>\n"
+		"      default-uid <uid>\n"
+		"      default-user <username> - set only\n\n"
 		"  uninstall/clean - Uninstall the distro.\n\n"
 		"  help - Print this message."
 	);
@@ -184,8 +186,9 @@ bool config(int argc, wchar_t *argv[])
 {
 	if (argc < 2)
 	{
+		ULONG default_uid;
 		WSL_DISTRIBUTION_FLAGS distor_flags;
-		if (!get_wsl_distro_config(DISTOR_NAME, NULL, &distor_flags))
+		if (!get_wsl_distro_config(DISTOR_NAME, &default_uid, &distor_flags))
 			return false;
 
 		bool enable_interop = (distor_flags & WSL_DISTRIBUTION_FLAGS_ENABLE_INTEROP);
@@ -195,23 +198,39 @@ bool config(int argc, wchar_t *argv[])
 		printf(
 			"enable-interop %s\n"
 			"append-nt-path %s\n"
-			"enable-drive-mounting %s\n",
+			"enable-drive-mounting %s\n"
+			"default-uid %lu\n",
 			enable_interop ? "true" : "false",
 			append_nt_path ? "true" : "false",
-			enable_drive_mounting ? "true" : "false");
+			enable_drive_mounting ? "true" : "false",
+			default_uid);
 	}
 	else
 	{
 		wchar_t *option = argv[0];
 		wchar_t *value = argv[1];
 
-		WSL_DISTRIBUTION_FLAGS flag;
+		WSL_DISTRIBUTION_FLAGS flag = 0;
+		ULONG uid;
 		if (wcscmp(option, L"enable-interop") == 0)
 			flag = WSL_DISTRIBUTION_FLAGS_ENABLE_INTEROP;
 		else if (wcscmp(option, L"append-nt-path") == 0)
 			flag = WSL_DISTRIBUTION_FLAGS_APPEND_NT_PATH;
 		else if (wcscmp(option, L"enable-drive-mounting") == 0)
 			flag = WSL_DISTRIBUTION_FLAGS_ENABLE_DRIVE_MOUNTING;
+		else if (wcscmp(option, L"default-uid") == 0)
+		{
+			uid = wcstoul(value, NULL, 10);
+		}
+		else if (wcscmp(option, L"default-user") == 0)
+		{
+			uid = uid_from_username(DISTOR_NAME, value);
+			if (uid == ULONG_MAX)
+			{
+				printf("Can not get UID from username '%ls'!", value);
+				return false;
+			}
+		}
 		else
 		{
 			printf("Invaild option '%ls'!", option);
@@ -219,16 +238,19 @@ bool config(int argc, wchar_t *argv[])
 		}
 
 		bool enable = false;
-		if (wcscmp(value, L"true") == 0)
-			enable = true;
-		else if (wcscmp(value, L"false") == 0)
+		if (flag)
 		{
-			// pass
-		}
-		else
-		{
-			printf("Invaild value '%ls' for option '%ls'!", value, option);
-			return false;
+			if (wcscmp(value, L"true") == 0)
+				enable = true;
+			else if (wcscmp(value, L"false") == 0)
+			{
+				// pass
+			}
+			else
+			{
+				printf("Invaild value '%ls' for option '%ls'!", value, option);
+				return false;
+			}
 		}
 
 		ULONG default_uid;
@@ -236,10 +258,15 @@ bool config(int argc, wchar_t *argv[])
 		if (!get_wsl_distro_config(DISTOR_NAME, &default_uid, &distor_flags))
 			return false;
 
-		if (enable)
-			distor_flags |= flag;
+		if (flag)
+		{
+			if (enable)
+				distor_flags |= flag;
+			else
+				distor_flags &= ~flag;
+		}
 		else
-			distor_flags &= ~flag;
+			default_uid = uid;
 
 		HRESULT hr = _WslConfigureDistribution(DISTOR_NAME, default_uid, distor_flags);
 
