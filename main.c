@@ -213,16 +213,9 @@ bool config(int argc, wchar_t *argv[])
 {
 	if (argc < 2)
 	{
-		ULONG distor_version, default_uid, env_count;
 		WSL_DISTRIBUTION_FLAGS distor_flags;
-		PSTR *env;
-		HRESULT hr = _WslGetDistributionConfiguration(DISTOR_NAME, &distor_version, &default_uid, &distor_flags, &env, &env_count);
-		if (FAILED(hr))
+		if (!get_wsl_distro_config(DISTOR_NAME, NULL, &distor_flags))
 			return false;
-
-		for (ULONG i = 0; i < env_count; i++)
-			CoTaskMemFree(env[i]);
-		CoTaskMemFree(env);
 
 		bool enable_interop = (distor_flags & WSL_DISTRIBUTION_FLAGS_ENABLE_INTEROP);
 		bool append_nt_path = (distor_flags & WSL_DISTRIBUTION_FLAGS_APPEND_NT_PATH);
@@ -267,23 +260,17 @@ bool config(int argc, wchar_t *argv[])
 			return false;
 		}
 
-		ULONG distor_version, default_uid, env_count;
+		ULONG default_uid;
 		WSL_DISTRIBUTION_FLAGS distor_flags;
-		PSTR *env;
-		HRESULT hr = _WslGetDistributionConfiguration(DISTOR_NAME, &distor_version, &default_uid, &distor_flags, &env, &env_count);
-		if (FAILED(hr))
+		if (!get_wsl_distro_config(DISTOR_NAME, &default_uid, &distor_flags))
 			return false;
-
-		for (ULONG i = 0; i < env_count; i++)
-			CoTaskMemFree(env[i]);
-		CoTaskMemFree(env);
 
 		if (enable)
 			distor_flags |= flag;
 		else
 			distor_flags &= ~flag;
 
-		hr = _WslConfigureDistribution(DISTOR_NAME, default_uid, distor_flags);
+		HRESULT hr = _WslConfigureDistribution(DISTOR_NAME, default_uid, distor_flags);
 
 		return SUCCEEDED(hr);
 	}
