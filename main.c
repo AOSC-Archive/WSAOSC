@@ -22,7 +22,7 @@
 void print_help(void)
 {
 	puts(
-		"AOSC OS for WSL Utility 0.1\n"
+		"AOSC OS for WSL Utility 0.1.1\n"
 		"Usage: aosc-os [<command>]\n\n"
 		"Commands:\n"
 		"  run/exec [<command line>] - Run command line in WSL.\n\n"
