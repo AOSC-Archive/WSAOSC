@@ -81,6 +81,7 @@
       <SubSystem>Console</SubSystem>
       <AdditionalDependencies>libvcruntime.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>vcruntime.lib</IgnoreSpecificDefaultLibraries>
+      <MinimumRequiredVersion>10</MinimumRequiredVersion>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
