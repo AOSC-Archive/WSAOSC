@@ -23,7 +23,7 @@ Open VS command line tools, cd to WSAOSC directory and run: `msbuild WSAOSC.sln 
 Install [mingw-w64](http://mingw-w64.org), cd to WSAOSC directory and run: `x86_64-w64-mingw32-gcc main.c -lole32 -O3`
 
 # Known issue
-- IO very bad issue, please close the windows indexing service for the roofs folder, and windows defender
+- I/O performance is not ideal. Disabling Windows Defender and Windows Indexing Service for the rootfs directory may mitigate this issue.
 
 # License
 GNU General Public License V3
