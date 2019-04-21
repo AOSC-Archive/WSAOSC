@@ -23,7 +23,7 @@ Open VS command line tools, cd to WSAOSC directory and run: `msbuild WSAOSC.sln 
 Install [mingw-w64](http://mingw-w64.org), cd to WSAOSC directory and run: `x86_64-w64-mingw32-gcc main.c -lole32 -O3`
 
 # Known issue
-- IO very bad problem, please close the windows indexing service for the roofs folder, and windows defender
+- IO very bad issue, please close the windows indexing service for the roofs folder, and windows defender
 
 # License
 GNU General Public License V3
