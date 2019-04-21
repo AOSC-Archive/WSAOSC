@@ -1,11 +1,11 @@
 # WSAOSC-ng
-AOSC OS on WSL
+AOSC OS on WSL (Windows Subsystem for Linux)
 
 # Get Started
-1. Enable WSL. (https://aka.ms/wslinstall)
+1. Enable WSL. (https://aka.ms/wslinstall).
 2. Grab a WSAOSC binary from [releases](https://github.com/AOSC-Dev/WSAOSC/releases).
-3. Grab AOSC OS kernel-less tarball. (https://aosc.io/os-download, Recommended buildkit version)
-4. Decompress .tar.xz to get .tar file. (Using 7-Zip or xz command.)
+3. Grab AOSC OS kernel-less tarball. (https://aosc.io/os-download, we recommend the "Container" variant).
+4. Decompress .tar.xz to get .tar file. (Using 7-Zip or xz command).
 5. Rename .tar file to `install.tar.gz` and move it to aosc-os.exe path.
 6. Run aosc-os.exe. AOSC OS will install in the same path.
 
